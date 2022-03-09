@@ -6,12 +6,16 @@ import com.google.common.collect.ImmutableMap;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public abstract class Tile {
 
+    //coordinate of the tile
     protected final int tileCoordinate;
 
+    //created a map which contains an int and an EmptyTile to know all the possible empty tiles
     private static final Map<Integer, EmptyTile> EMPTY_TILES = createAllPossibleEmptyTiles();
 
+    //method to create all the possible empty tiles
     private static Map<Integer, EmptyTile> createAllPossibleEmptyTiles() {
 
         final Map<Integer, EmptyTile> emptyTileMap = new HashMap<>();
@@ -19,9 +23,11 @@ public abstract class Tile {
             emptyTileMap.put(i, new EmptyTile(i));
         }
 
+        //return an unchangeable map of emptytiles via the help of the guava library
         return ImmutableMap.copyOf(emptyTileMap);
     }
 
+    //this is the only mutable part in which we can create a tile on the board
     public static Tile createTile(final int tileCoordinate, final Piece piece){
         return piece != null ? new OccupiedTile(tileCoordinate, piece) : EMPTY_TILES.get(tileCoordinate);
     }
@@ -34,6 +40,9 @@ public abstract class Tile {
 
     public abstract Piece getPiece();
 
+    //created this inner class which inherits the mother class's attributes
+    //it's used to assign an empty tile
+    //we later declare a similar class to show an occupied tile
     public static final class EmptyTile extends Tile{
 
         EmptyTile(final int coordinate){
